@@ -1,0 +1,70 @@
+public partial class SignUP : Form
+{
+    private string connectionString = "Data Source=LAPTOP-PPV19RVJ\\SQLEXPRESS;Initial Catalog=PerfumeStore;Integrated Security=True;";
+    DBAccess dBaccess=new DBAccess();
+    public SignUP()
+    {
+        InitializeComponent();
+    }
+
+    private void label1_Click(object sender, EventArgs e)
+    {
+
+    }
+
+    private void label2_Click(object sender, EventArgs e)
+    {
+
+    }
+
+    private void label4_Click(object sender, EventArgs e)
+    {
+
+    }
+
+    private void textBox3_TextChanged(object sender, EventArgs e)
+    {
+
+    }
+
+    private void btnSignUp_Click(object sender, EventArgs e)
+    {
+        string firstName = txtFirstName.Text;
+        string lastName = txtLastName.Text;
+        string email = txtEmail.Text;
+        string phone = txtPhone.Text;
+
+        // Create a new user in the Users table
+        string query = "INSERT INTO Users (FirstName, LastName, Email, Phone) VALUES (@FirstName, @LastName, @Email, @Phone)";
+
+        using (SqlConnection connection = new SqlConnection(connectionString))
+        {
+            using (SqlCommand command = new SqlCommand(query, connection))
+            {
+                // Set parameter values
+                command.Parameters.AddWithValue("@FirstName", firstName);
+                command.Parameters.AddWithValue("@LastName", lastName);
+                command.Parameters.AddWithValue("@Email", email);
+                command.Parameters.AddWithValue("@Phone", phone);
+
+                try
+                {
+                    // Open the connection and execute the query
+                    connection.Open();
+                    command.ExecuteNonQuery();
+                    connection.Close();
+
+                    MessageBox.Show("Sign-up successful!");
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("An error occurred during sign-up: " + ex.Message);
+                }
+            }
+        }
+
+           
+
+
+    }
+}
