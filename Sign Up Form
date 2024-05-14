@@ -34,7 +34,7 @@ public partial class SignUP : Form
         string email = txtEmail.Text;
         string phone = txtPhone.Text;
 
-        // Create a new user in the Users table
+    
         string query = "INSERT INTO Users (FirstName, LastName, Email, Phone) VALUES (@FirstName, @LastName, @Email, @Phone)";
 
         using (SqlConnection connection = new SqlConnection(connectionString))
