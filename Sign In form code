@@ -37,7 +37,7 @@ public partial class Sign_In : Form
 
                     if (count > 0)
                     {
-                        // Fetch user details
+                        
                         string getUserQuery = "SELECT FirstName, LastName, Phone FROM Users WHERE Email = @Email";
                         using (SqlCommand getUserCommand = new SqlCommand(getUserQuery, connection))
                         {
@@ -50,7 +50,7 @@ public partial class Sign_In : Form
                                 string lastName = reader["LastName"].ToString();
                                 string phone = reader["Phone"].ToString();
 
-                                // Update the label with the user details
+                                
                                 lblLoggedInUser.Text = $"Welcome, {firstName} {lastName} ({email}). Phone: {phone}";
                             }
                             reader.Close();
