@@ -1,0 +1,115 @@
+public partial class Sign_In : Form
+{
+    private string connectionString = "Data Source=LAPTOP-PPV19RVJ\\SQLEXPRESS;Initial Catalog=PerfumeStore;Integrated Security=True;";
+    DBAccess dBaccess = new DBAccess();
+    private Label lblLoggedInUser;
+
+    public Sign_In()
+    {
+        InitializeComponent();
+
+        lblLoggedInUser = new Label();
+        lblLoggedInUser.Location = new Point(10, 10);
+        lblLoggedInUser.Size = new Size(300, 20);
+        Controls.Add(lblLoggedInUser);
+    }
+
+    private void btnSignUp_Click(object sender, EventArgs e)
+    {
+        string email = txtEmail.Text;
+
+        // Check if the user exists in the Users table
+        string query = "SELECT COUNT(*) FROM Users WHERE Email = @Email";
+
+        using (SqlConnection connection = new SqlConnection(connectionString))
+        {
+            using (SqlCommand command = new SqlCommand(query, connection))
+            {
+                // Set parameter values
+                command.Parameters.AddWithValue("@Email", email);
+
+                try
+                {
+                    // Open the connection and execute the query
+                    connection.Open();
+                    int count = (int)command.ExecuteScalar();
+                    connection.Close();
+
+                    if (count > 0)
+                    {
+                        // Fetch user details
+                        string getUserQuery = "SELECT FirstName, LastName, Phone FROM Users WHERE Email = @Email";
+                        using (SqlCommand getUserCommand = new SqlCommand(getUserQuery, connection))
+                        {
+                            getUserCommand.Parameters.AddWithValue("@Email", email);
+                            connection.Open();
+                            SqlDataReader reader = getUserCommand.ExecuteReader();
+                            if (reader.Read())
+                            {
+                                string firstName = reader["FirstName"].ToString();
+                                string lastName = reader["LastName"].ToString();
+                                string phone = reader["Phone"].ToString();
+
+                                // Update the label with the user details
+                                lblLoggedInUser.Text = $"Welcome, {firstName} {lastName} ({email}). Phone: {phone}";
+                            }
+                            reader.Close();
+                            connection.Close();
+                        }
+
+                        MessageBox.Show("Sign-in successful!");
+                    }
+                    else
+                    {
+                        MessageBox.Show("User not found.");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("An error occurred during sign-in: " + ex.Message);
+                }
+            }
+
+        }
+    }
+
+    private void textBox1_TextChanged(object sender, EventArgs e)
+    {
+
+    }
+
+    private void txtFirstName_Click(object sender, EventArgs e)
+    {
+
+    }
+
+    private void textBox4_TextChanged(object sender, EventArgs e)
+    {
+
+    }
+
+    private void txtLastName_Click(object sender, EventArgs e)
+    {
+
+    }
+
+    private void textBox2_TextChanged(object sender, EventArgs e)
+    {
+
+    }
+
+    private void txtEmail_Click(object sender, EventArgs e)
+    {
+
+    }
+
+    private void txtPhone_Click(object sender, EventArgs e)
+    {
+
+    }
+
+    private void textBox3_TextChanged(object sender, EventArgs e)
+    {
+
+    }
+}
