@@ -1,0 +1,58 @@
+ public partial class PerfumeCatalog : Form
+ {
+     string connectionString = "Data Source=LAPTOP-PPV19RVJ\\SQLEXPRESS;Initial Catalog=PerfumeStore;Integrated Security=True;";
+     public PerfumeCatalog()
+     {
+         InitializeComponent();
+     }
+
+     private void PerfumeCatalog_Load(object sender, EventArgs e)
+     {
+
+     }
+     private void LoadPerfumeData()
+     {
+         try
+         {
+             using (SqlConnection connection = new SqlConnection(connectionString))
+             {
+                 connection.Open();
+
+                 string query = "SELECT [Id], [Name], [Brand], [FragranceFamily], [Price], [Quantity] FROM Perfumes";
+
+                 SqlCommand command = new SqlCommand(query, connection);
+                 SqlDataAdapter dataAdapter = new SqlDataAdapter(command);
+                 DataTable dataTable = new DataTable();
+                 dataAdapter.Fill(dataTable);
+
+                 dataGridViewPerfumes.DataSource = dataTable;
+             }
+         }
+         catch (Exception ex)
+         {
+             MessageBox.Show("Error loading perfume data: " + ex.Message);
+         }
+     }
+
+     private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+     {
+         if (dataGridViewPerfumes.Columns[e.ColumnIndex] is DataGridViewButtonColumn && e.RowIndex >= 0)
+         {
+             DataGridViewRow row = dataGridViewPerfumes.Rows[e.RowIndex];
+
+             string perfumeName = row.Cells["Name"].Value.ToString();
+             string brand = row.Cells["Brand"].Value.ToString();
+             string fragranceFamily = row.Cells["FragranceFamily"].Value.ToString();
+             decimal price = Convert.ToDecimal(row.Cells["Price"].Value);
+             int quantity = Convert.ToInt32(row.Cells["Quantity"].Value);
+
+             MessageBox.Show($"Clicked on {perfumeName} by {brand}\nFragrance Family: {fragranceFamily}\nPrice: {price:C}\nQuantity: {quantity}");
+         }
+
+     }
+
+     private void label1_Click(object sender, EventArgs e)
+     {
+
+     }
+ }
