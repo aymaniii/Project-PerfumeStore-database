@@ -1,0 +1,129 @@
+public partial class HomePage : Form
+{
+    public HomePage()
+    {
+        InitializeComponent();
+    }
+
+    private void btnSignUp_Click(object sender, EventArgs e)
+    {
+        string newuserFirstName=txtFirstNamehome.Text;
+        string newuserLastName=txtLastNamehome.Text;    
+        string newuserEmail=txtEmailhome.Text; 
+        string newuserPhone=txtPhonehome.Text;
+        if (newuserFirstName.Equals(""))
+            MessageBox.Show("try again");
+        else if (newuserLastName.Equals(""))
+            MessageBox.Show("try again");
+        else if (newuserEmail.Equals(""))
+            MessageBox.Show("try again");
+        else if (newuserPhone.Equals(""))
+            MessageBox.Show("try again");
+        else 
+        {
+            try
+            {
+                string connectionString = "Data Source=LAPTOP-PPV19RVJ\\SQLEXPRESS;Initial Catalog=PerfumeStore;Integrated Security=True;";
+
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+
+                    string query = "UPDATE Users SET [First Name] = @FirstName, [Last Name] = @LastName, Email = @Email, Phone = @Phone WHERE ID = @UserID";
+
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@FirstName", newuserFirstName);
+                        command.Parameters.AddWithValue("@LastName", newuserLastName);
+                        command.Parameters.AddWithValue("@Email", newuserEmail);
+                        command.Parameters.AddWithValue("@Phone", newuserPhone);
+                        command.Parameters.AddWithValue("@UserID", Sign_In.id);
+
+                        int rowsAffected = command.ExecuteNonQuery();
+
+                        if (rowsAffected > 0)
+                        {
+                            MessageBox.Show("Account information updated successfully!");
+                        }
+                        else
+                        {
+                            MessageBox.Show("Failed to update account information.");
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error updating account information: " + ex.Message);
+            }
+
+
+        }
+
+    }
+
+    private void txtLastName_TextChanged(object sender, EventArgs e)
+    {
+
+    }
+
+    private void lable8_Click(object sender, EventArgs e)
+    {
+
+    }
+
+    private void txtPhone_TextChanged(object sender, EventArgs e)
+    {
+
+    }
+
+    private void lable5_Click(object sender, EventArgs e)
+    {
+
+    }
+
+    private void txtEmail_TextChanged(object sender, EventArgs e)
+    {
+
+    }
+
+    private void lable9_Click(object sender, EventArgs e)
+    {
+
+    }
+
+    private void txtFirstName_TextChanged(object sender, EventArgs e)
+    {
+
+    }
+
+    private void lable6_Click(object sender, EventArgs e)
+    {
+
+    }
+
+    private void label2_Click(object sender, EventArgs e)
+    {
+
+    }
+
+    private void HomePage_Load(object sender, EventArgs e)
+    {
+        lblWelcomeFirstName.Text = "Welcome" + Sign_In.FirstName;
+        txtFirstNamehome.Text = Sign_In.FirstName;
+        txtLastNamehome.Text = Sign_In.LastName;    
+        txtEmailhome.Text = Sign_In.Email;
+        txtPhonehome.Text = Sign_In.Phone;  
+    }
+
+    private void button2_Click(object sender, EventArgs e)
+    {
+        PerfumeCatalog perfumeCatalogForm = new PerfumeCatalog();
+        perfumeCatalogForm.ShowDialog();
+    }
+
+    private void button1_Click(object sender, EventArgs e)
+    {
+
+    }
+}
